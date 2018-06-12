@@ -73,7 +73,7 @@ export class Index extends React.Component {
       this.setState({
         currentNodeJson: JSON.stringify(json)
       })
-      this.props.libContext.postLib(this.state.currentDom, 'vnode')
+      this.props.libContext.postLib(json, 'vnode')
       this.afterSave()
     } else {
       console.log('no name')

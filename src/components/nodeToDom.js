@@ -66,31 +66,29 @@ export default class extends React.Component {
       // }
       // classInfo动态注入到style样式中
 
-      // 将输入的style样式转换为react的style
-      // if (style) {
-      //   this.classStringToStyle(attrObj.style, style)
-      // }
-
       // 需要查找并且赋值的列表
-      let need = ['src']
+      let need = ['src', 'style']
       attrs.forEach((attr) => {
         if (attr.name === 'src') {
           attrObj.src = attr.value
+        }
+        if (attr.name === 'style') {
+          this.classStringToStyle(attrObj, attr.value)
         }
       })
     }
     return attrObj
   }
 
-  // classStringToStyle (attrObj, styleString) {
-  //   // 1 删除掉空格
-  //   if (styleString) {
-  //     styleString = styleString.replace(/\s+/g,"")
-  //     // 3 分割
-  //     let arrStyle = styleString.split(/:|;/)
-  //     this.arrToStyle(attrObj.style, arrStyle)
-  //   }
-  // }
+  classStringToStyle (attrObj, styleString) {
+    // 1 删除掉空格
+    if (styleString) {
+      styleString = styleString.replace(/\s+/g,"")
+      // 3 分割
+      let arrStyle = styleString.split(/:|;/)
+      this.arrToStyle(attrObj.style, arrStyle)
+    }
+  }
 
   //
   arrToStyle (attrObj, arrStyle) {
@@ -116,7 +114,7 @@ export default class extends React.Component {
         }
       }
       // 可以增加单位换算。
-      if (valueString.includes('rpx')) {
+      if (valueString && valueString.includes('rpx')) {
         let wxRpx = valueString.split(' ')
         if (wxRpx && wxRpx.length) {
           console.log('transe')
@@ -141,7 +139,7 @@ export default class extends React.Component {
           })
           console.log(afterTrans)
           attrObj[afterKeyString] = afterTrans
-      }
+        }
 
       } else {
         attrObj[afterKeyString] = valueString

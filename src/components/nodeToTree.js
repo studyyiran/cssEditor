@@ -104,7 +104,7 @@ export default class NodeToTree extends React.Component {
           </Tree>
           <style jxs>{`
             .out {
-              min-width: 200px;
+              min-width: 300px;
               overflow: hidden;
             }
           `}</style>
