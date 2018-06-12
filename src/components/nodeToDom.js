@@ -157,9 +157,6 @@ export default class extends React.Component {
             width: 375px;
             min-height: 367px;
             background-color: #F2F2F2;
-            position: absolute;
-            top: 0;
-            left: 0;
           }
         `}</style>
       </div>

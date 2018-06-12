@@ -105,8 +105,7 @@ export class Index extends React.Component {
   renderUserControl () {
     if (this.state.currentDom) {
       return (
-        <div className={"zao-flex-center out"}>
-          {this.renderProjectInfo()}
+        <div className={"zao-flex-column out"}>
           <div>
             <div style={{display: 'flex'}}>根节点名称：{this.state.json && this.state.json.pathName}</div>
             <div style={{display: 'flex'}}><div onClick={() => {this.saveRootToFile()}}>根节点输出小程序</div></div>
@@ -128,11 +127,10 @@ export class Index extends React.Component {
           {this.renderAttr()}
           <style jsx>{`
             .out {
-              position: relative;
-              left: 375px;
+              align-items: flex-start;
             }
             .out > div {
-              margin-left: 30px;
+              margin-bottom: 30px;
             }
           `}</style>
         </div>
@@ -294,14 +292,10 @@ export class Index extends React.Component {
 
   render () {
     return <div className={'out-out'}>
-        {this.renderUserControl()}
-        {this.state.json && <NodeContainer getLibByType={this.getLibByType} node={this.state.json} libContext={this.props.libContext} changeCurrentDom={this.changeCurrentDom} updateNode={(...e) => {this.updateNode(...e)}} />}
+        {this.state.json && <NodeContainer slot1={this.renderUserControl()} slot2={this.renderProjectInfo()} getLibByType={this.getLibByType} node={this.state.json} libContext={this.props.libContext} changeCurrentDom={this.changeCurrentDom} updateNode={(...e) => {this.updateNode(...e)}} />}
         <style>{`
         * {
           margin: 0
-        }
-        .flex {
-          display: flex;
         }
         .out-out {
           background-color: #e5d6d6;

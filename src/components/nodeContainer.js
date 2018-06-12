@@ -128,11 +128,13 @@ export default class extends React.Component {
       // 循环
       return <div>
         <div className='menu-out-column'>
-          <div style={{width: '375px'}} className='zao-flex-shrink'>
+          <div style={{width: '375px'}} className='zao-flex-shrink zao-flex-column'>
             <div onClick={() => {this.cacheReset()}}>还原</div>
             <NodeToDom getLibByType={this.props.getLibByType} currentDomIndex={this.state.currentDomIndex} onSelectDom={this.onSelectDom} node={node} />
+            {this.props.slot1}
           </div>
-          <div>
+          <div style={{width: '220px'}}>
+            {this.props.slot2}
             <AddComponent getLibByType={this.props.getLibByType} currentDomIndex={this.state.currentDomIndex} updateNode={this.updateNode} node={node}  />
             <AddNewClass node={this.state.currenEditeDom} saveToCache={this.saveToCache} updateClassName={this.updateClassName} />
           </div>
