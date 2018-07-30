@@ -19,6 +19,7 @@ export class Index extends React.Component {
     this.changeAttrs = this.changeAttrs.bind(this)
     this.getLibByType = this.getLibByType.bind(this)
     this.saveToCss = this.saveToCss.bind(this)
+    this.getFileTransJson = this.getFileTransJson.bind(this)
   }
 
   componentWillMount = async () => {
@@ -83,8 +84,8 @@ export class Index extends React.Component {
   saveRootToFile () {
     // 1 先从根节点同步。
     this.updateResetClass()
-    // 2 再保存根节点vnode
-    this.saveNodeToLib(this.state.json)
+    // 2 再保存根节点vnode(这部分较多鱼，屏蔽)
+    // this.saveNodeToLib(this.state.json)
     // 3 在根据根节点生成文件
     this.props.libContext.postPage(this.state.json)
     // this.outputClassFormat(this.state.json)
@@ -121,6 +122,7 @@ export class Index extends React.Component {
             <div style={{display: 'flex'}}>
               <input value={this.state.inputJson} onChange={(e) => {this.setState({inputJson: e.target.value})}}/>
               <div onClick={() => {this.inputJsonToNode()}}>导入</div>
+              <div>(  )</div>
               <div onClick={this.updateResetClass}>同步样式</div>
             </div>
           </div>
@@ -138,13 +140,21 @@ export class Index extends React.Component {
     }
   }
 
-  inputJsonToNode () {
+  inputJsonToNode (json=this.state.inputJson) {
     // 导入
-    let json = this.state.inputJson
+    let resultJson
+    let resultString
+    if (typeof json == "string") {
+      resultJson = JSON.parse(json)
+      resultString = json
+    } else {
+      resultJson = json
+      resultString = JSON.stringify(json)
+    }
     this.setState({
-      json: JSON.parse(json),
-      currentDom: JSON.parse(json),
-      inputJson: json,
+      json: resultJson,
+      currentDom: resultJson,
+      inputJson: resultString,
     }, this.updateResetClass)
   }
 
@@ -275,6 +285,12 @@ export class Index extends React.Component {
     return findFromLib || item
   }
 
+  getFileTransJson = async () => {
+    let a = await this.props.libContext.getFileTransJson(this.state.currentDom['pathName'])
+    console.log(JSON.stringify(a))
+    this.inputJsonToNode(a)
+  }
+
   renderProjectInfo () {
     return <div>
         <div>当前选中的ID：{this.state.currentDom && this.state.currentDom.index}</div>
@@ -286,6 +302,7 @@ export class Index extends React.Component {
         <div style={{display: 'flex'}}>
           vnode：<input value={this.state.currentNodeJson} />
         </div>
+        <div onClick={() => {this.getFileTransJson()}}>root显灵</div>
       </div>
 
   }
@@ -303,6 +320,17 @@ export class Index extends React.Component {
       `}
         </style>
       <style jsx global>{`
+        @font-face {
+            font-family: 'zaofont';
+            src: url(data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAAW4AA0AAAAACyAAAAVkAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GVgCCShEIColUh2MLFAABNgIkAxwEIAWEfAdeGzQJIxFme9Ml+0dC5qaP5iOirJctarWoifbk4Jy3CRNBpoCQeXYvLnHxTTxga71vduaOCwiKIR4IJBEKX9t+I6EOgFyTHWxLk9YTSsXUYHOYGHdV5TpTfam8K/83p79AF5CtjZoMuRHBXcLXALoBCjW9Vz05ITdhyOH/v5+r/4aZvLZoUhfKzmoyk2gCHrVaCRziEmKSRNtChlIokRQ5LOiZVOI740YI0DQzqA7PwhaWlZcOqKMjMkFUFiRkCPF/2KVAdja7h8vw/eGLEaFMphApu87eOH4G0+x5PxipnLJcwliMBGxRsnVPwSxLYFAyGBUlc9Y2la/hYlwhP9+FygWhKLKSkCGj/c0A/ocIpEKey6AKW7dFd8I5skjIp/MVBGUFSaGTVVRllQklhAhCHQQNaSRB2OpDWYIgSaK6gxBzbGEJAMU0eog/gxAgaiGVWlo4NqNWTWNTEHOD54cgTH1YoBZZEc2nPmowv2vnfTc4DsuxIq1bj8a0NkJ6eHgeY/Y0AIUMT6tvKhPQIlZ1A0eprN/XzUrKXX/eR2ziWREzf1E/jl0wq2YyLEftQ4gR0ML08Ocz2Bsv+opPvwznCjrndLLR86Y1yQzE7KM4jFkhLUiDjWvZOR6KI4YfU98kHOhBCwiJUQt1nDguO8OlCA6LMGYXNedjiNIZpF7jHqf74ZmHyj4Uh4XqT5+5P29a8P5s/ueLhecv7dWFgR5CMyqN83OYXy8XWZfkq8Iwwy72fvlrz3pPNoW+vexH32cXQRoaPM9epC8w58praHqas/S9sXcFy1i4XOtGNHF0Zqo5DGaEMGY/SaPnRNd5StGn1LrG7AIZcuNdx3ob17xMbnZRqxvy2eLQSz+b/pPWh/1VFP5b9ZPzbQOEgpaCpjkg7P4sNSiwQ03f50vL2lb61piLvcm7bR9x+P+wakOvCwPfSJUkFDQ6UgqSw7ZoZBoDm3c3a+6paB0ATkBH8XabgohIqetS9D2UnN/95F3H/31n3joh+07lXWUC3VO5VzkdgffY/cC2r7r5AkUFF3qK+fQdrEjLCffUaizU7tV+Z2ytWq5mZvyx/NDRoiZRcv87MX9Wu0tK5qtr39J9tRy1+4k5mvSc5JxiiDWN/BBzyL4FEMRNPCu037T+1pZcJXe1kEytv4L08GEUiKyHj25J3OLuoyiwb5cWGmYsST4hDXaMWg7qJQ7//PlYHJTISocljrS0n4pJbm0yRFcD5Y0pxCOkQEgq6CiQYnTivIZGciLdsJCoTv7XhmTgdTAT2h3qwewB1sp2YHsKMwtZSXsWjzoSyE47MpuCnduQRMHbmYawhfkyFlEoOIJojKCdESCCh1U/6ysEBSkqBQUqjrUhnGIQ11Do6SF+q/+u9zBqZC0QmC+fNSjPK19+0r8yTjbklxueP4oN0QFlGQhsfPtOIDZsEmmF9M5hAfGT4UkYZ4XtljspoGKxMshQVUUOibae9xfrYHgoCErmQobbChF3DBLunqCg5omgqKRZUDUsjDm6pl04JwqpgqGAILjKG4EibgdKOB/KuAdBRdOToIr3KkA2fO/N6AongIzyYcdCW/KM4EQmazhFucgyIQTQPSb1vl79L4JmgNwxWicN+RqaeTTACkwTsR3zwWcEJ1V3kkL3BswXMNihAoVIBpcelqiIcjuYtLhtx11bSyCmUeWgENmK8FEOwUQPG2E2GyVo55dM2CnOE8FNq8og1tQwJFcq1M9nq08Y9F+yjgDo/ffX1kMiIT1HRKdj2uBE0kYaq4/ERu3scUgRQOPRCop2QzHEkEIhFEtbjWM3pFHNwqc6drVqoNMow5wbGu1spUX0onI5oWcY) format('woff2'),
+                url(data:application/font-woff;charset=utf-8;base64,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) format('woff'),
+                url('zaofont.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .zf-jiantou:before { font-family: 'zaofont';content: "\\e695";}
+
         .local-space-between {
           justify-content: space-between;
         }

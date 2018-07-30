@@ -57,6 +57,12 @@ export class LibProvider extends React.Component {
       return result
     }
 
+    // 从file中导出json
+    this.getFileTransJson = async (path) => {
+      let result = await AxiosUtil.get(`/xmlToNode?path=${path}`)
+      return result
+    }
+
     this.getLib = (name, type) => {
       switch (type) {
         case 'vnode':
@@ -89,6 +95,7 @@ export class LibProvider extends React.Component {
       getLib: this.getLib, // 获取
       updateLib: this.updateLib, // 更新
       postLib: this.postLib, // 更新
+      getFileTransJson: this.getFileTransJson, //
       changeCopyClass: this.changeCopyClass, // 更新
       postPage: this.postPage, // 更新
       exportCss: this.exportCss // 更新

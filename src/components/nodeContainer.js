@@ -129,8 +129,8 @@ export default class extends React.Component {
       return <div>
         <div className='menu-out-column'>
           <div style={{width: '375px'}} className='zao-flex-shrink zao-flex-column'>
-            <div onClick={() => {this.cacheReset()}}>还原</div>
             <NodeToDom getLibByType={this.props.getLibByType} currentDomIndex={this.state.currentDomIndex} onSelectDom={this.onSelectDom} node={node} />
+            <div onClick={() => {this.cacheReset()}}>还原</div>
             {this.props.slot1}
           </div>
           <div style={{width: '220px'}}>

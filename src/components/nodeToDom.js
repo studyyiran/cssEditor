@@ -67,13 +67,17 @@ export default class extends React.Component {
       // classInfo动态注入到style样式中
 
       // 需要查找并且赋值的列表
-      let need = ['src', 'style']
+      // let need = ['src', 'style', 'class']
       attrs.forEach((attr) => {
         if (attr.name === 'src') {
           attrObj.src = attr.value
         }
         if (attr.name === 'style') {
           this.classStringToStyle(attrObj, attr.value)
+        }
+        if (attr.name === 'class') {
+          console.log('get class')
+          attrObj.className = attr.value
         }
       })
     }
@@ -155,7 +159,7 @@ export default class extends React.Component {
         <style jsx>{`
           .node {
             width: 375px;
-            min-height: 367px;
+            min-height: 600px;
             background-color: #F2F2F2;
           }
         `}</style>
