@@ -200,7 +200,7 @@ export default class extends React.Component {
     imgNode.attrs = {
       class: 'rich-img-inner',
       // src: item.img
-      src: 'https://xiaozaoresource.xiaozao.org/%E8%BF%90%E8%90%A5%E7%94%A8%E5%9B%BE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B0%81%E9%9D%A2%E5%9B%BE.jpg'
+      src: 'https://xiaozaoresource.xiaozao.org/%E8%BF%90%E8%90%A5%E7%94%A8%E5%9B%BE/%E4%BA%8C%E7%BB%B4%E7%A0%81/wx_qrcode.png'
     }
     return imgNode
   }
