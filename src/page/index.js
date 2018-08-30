@@ -109,7 +109,7 @@ export class Index extends React.Component {
         <div className={"zao-flex-column out"}>
           <div>
             <div style={{display: 'flex'}}>根节点名称：{this.state.json && this.state.json.pathName}</div>
-            <div style={{display: 'flex'}}><div onClick={() => {this.saveRootToFile()}}>根节点输出小程序</div></div>
+
             <div style={{display: 'flex'}}><div onClick={() => {this.setState({showAllAttr: !this.state.showAllAttr})}}>暴露Attr</div></div>
             <div style={{display: 'flex'}}><div onClick={() => {this.setState({canEditClass: !this.state.canEditClass})}}>{this.state.canEditClass ? '样式锁已失效' : '样式锁已激活'}</div></div>
             <div style={{display: 'flex'}}>classInfo：<input value={JSON.stringify(this.props.libContext.copyClass)} />
@@ -118,6 +118,7 @@ export class Index extends React.Component {
           </div>
           <div onClick={() => {this.emptyViewFromLib()}}>一键重置</div>
           <div onClick={() => {this.props.libContext.exportCss()}}>导出静态css</div>
+          <div onClick={() => {this.saveRootToFile()}}>根节点输出小程序</div>
           <div>
             <div style={{display: 'flex'}}>
               <input value={this.state.inputJson} onChange={(e) => {this.setState({inputJson: e.target.value})}}/>
@@ -330,6 +331,12 @@ export class Index extends React.Component {
         }
 
         .zf-jiantou:before { font-family: 'zaofont';content: "\\e695";}
+
+        .com-zfont-arrow {
+    margin-left: 12rpx;
+}
+
+.com-zfont-jiantou:before { font-family: 'zaofont';content: "\\e695";}
 
         .local-space-between {
           justify-content: space-between;
